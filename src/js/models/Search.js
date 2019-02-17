@@ -8,7 +8,8 @@ export default class Search {
         const proxy = "https://cors-anywhere.herokuapp.com/";
         const food2Fork_key = "f5e0def7610f4c445db7c0c0ed62d483";
         try {
-            const res = await axios(`${proxy}https://www.food2fork.com/api/search?key=${food2Fork_key}&q=${this.query}`);
+            // const res = await axios(`${proxy}https://www.food2fork.com/api/search?key=${food2Fork_key}&q=${this.query}`);
+            const res = await axios(`https://www.food2fork.com/api/search?key=${food2Fork_key}&q=${this.query}`);
             this.result = res.data.recipes;
         } catch (err) {
             console.log(err);
