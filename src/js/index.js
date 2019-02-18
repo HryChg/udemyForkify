@@ -1,6 +1,7 @@
 import Search from './models/Search';
 import * as searchView from './views/searchView';
 import { elements, renderLoader, clearLoader } from './views/base';
+import Recipe from './models/Recipe';
 
 /** Global state of the app
 * - Search Object
@@ -10,6 +11,9 @@ import { elements, renderLoader, clearLoader } from './views/base';
 */
 const state = {};
 
+/**
+ * SEARCH CONTROLLER
+ */
 // EFFECTS: display searchView on left column
 const controlSearch = async () => {
     // 1) get the search keywords from view
@@ -61,3 +65,11 @@ elements.searchResPages.addEventListener('click', e => {
         searchView.renderResults(state.search.result, goToPage);
     }
 });
+
+
+/**
+ * RECIPE CONTROLLER
+ */
+const r = new Recipe(35382);
+r.getRecipe();
+console.log(r);
