@@ -7,11 +7,13 @@ export const elements = {
     searchResPages: document.querySelector('.results__pages')
 };
 
+// a public variable containing all the HTML element ID strings
 export const elementString = {
     loader: 'loader'
 }
 
 
+// EFFECTS: render the loading icon with infinite spinning!
 export const renderLoader = parent => {
     const loader = `
         <div class="${elementString.loader}">
@@ -23,6 +25,7 @@ export const renderLoader = parent => {
     parent.insertAdjacentHTML('afterbegin', loader);
 }
 
+// EFFECTS: delete the loading icon
 export const clearLoader = () => {
     const loader = document.querySelector(`.${elementString.loader}`);
     if (loader) loader.parentElement.removeChild(loader);
