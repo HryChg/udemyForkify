@@ -33,16 +33,23 @@ const controlSearch = async () => {
         // 5) Render results on UI
         clearLoader();
         searchView.renderResults(state.search.result);
-
-        
-
- 
     }
 
 }
 
-
 elements.searchForm.addEventListener('submit', e => {
     e.preventDefault();
     controlSearch();
+});
+
+elements.searchResPages.addEventListener('click', e => {
+    // when clicking the page button, it will find the closest class around that area
+    // which should be the 'btn-inline' class
+    const btn = e.target.closest('.btn-inline'); 
+    
+    if (btn){
+        const goToPage = parseInt(btn.dataset.goto, 10);
+        searchView.clearResults();
+        searchView.renderResults(state.search.result, goToPage);
+    }
 });
