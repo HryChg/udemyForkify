@@ -28,12 +28,19 @@ const controlSearch = async () => {
         searchView.clearResults();
         renderLoader(elements.searchRes); // the spinner
         
-        // 4) Search for recipes
-        await state.search.getResults();
+        try{
+            // 4) Search for recipes
+            await state.search.getResults();
 
-        // 5) Render results on UI
-        clearLoader();
-        searchView.renderResults(state.search.result);
+            // 5) Render results on UI
+            clearLoader();
+            searchView.renderResults(state.search.result);   
+        } catch (error) {
+            alert('Something wrong with the search... ');
+            clearLoader();
+        }
+
+        
     }
 
 }
@@ -70,6 +77,47 @@ elements.searchResPages.addEventListener('click', e => {
 /**
  * RECIPE CONTROLLER
  */
-const r = new Recipe(35382);
-r.getRecipe();
-console.log(r);
+
+const controlRecipe = async () => {
+    /**
+     * ** Get ID from URL **
+     * window.location  return the url
+     * window.location.hash return the hashcode within URL
+     */
+    const hashCode = window.location.hash;
+    const id = hashCode.replace('#', ''); // replace '#' with nothing
+    console.log(id);
+
+    
+    if (id) {
+        // Prepare UI for changed    
+
+        // Create new recipe object
+        state.recipe = new Recipe(id);
+
+        try{
+            // Get recipe data 
+            await state.recipe.getRecipe();
+
+            // Calculate servings and time
+            state.recipe.calcTime();
+            state.recipe.calcServings();
+
+            // Render recipe
+            console.log(state.recipe);
+        } catch (error) {
+            alert('Error Processing Recipe');
+        }
+    }
+};
+
+/**
+ * EFFECTS: add eventListener to these two events : 'hashchange' and 'load'
+ *          if event is 'load', it allows the webpage to keep the current recipe id
+ * 
+ * hashchange: any change to the hash code in the URL. In this case, hashcode is the id of recipe
+ * load: when the window reloads
+ */
+['hashchange', 'load'].forEach(event => {
+    window.addEventListener(event, controlRecipe)
+})
