@@ -7,3 +7,9 @@
 - read data (recipe ID in this case) from the page URL
 - respond to the hashchange event (when current recipe ID changes)
 - how to add the same event listener to multiple events (using foreach() in the recipe controller)
+
+
+# 2019.02.20 12:34p
+- used array method like map(), slice(), findIndex() and includes()
+- when and why to use eval()
+- parse thru similar terms like 'tbsp' and 'table spoon' 
