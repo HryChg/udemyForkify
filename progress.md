@@ -13,3 +13,4 @@
 - used array method like map(), slice(), findIndex() and includes()
 - when and why to use eval()
 - parse thru similar terms like 'tbsp' and 'table spoon' 
+- TODO still need to test and Recipe.parseIngredients()
