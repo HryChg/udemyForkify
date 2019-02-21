@@ -16,6 +16,25 @@ export const clearResults = () => {
     elements.searchResPages.innerHTML = '';
 };
 
+/**
+ * EFFECTS: remove all highlighted search item in HTML, then only highlight the selected search item by adding a 
+ *          new class `results__link--active` to the selected recipe id
+ * 
+ * `a[]` is a CSS selector. 
+ * In this case, `a[href*="#${id}"]` selects HTML elements based on the attribute `href`
+ * 
+ * @param {*} id the id of the recipe
+ */
+export const highlightSelected = id => {
+    // remove highlight on previously selected items
+    const resultsArr = Array.from(document.querySelectorAll('.results__link'));
+    resultsArr.forEach(el => {
+        el.classList.remove('results__link--active');
+    });
+
+    document.querySelector(`a[href*="#${id}"]`).classList.add('results__link--active');
+};
+
 /* 
 EFFECTS: return a string within limit (default = 17)
 EXAMPLE:

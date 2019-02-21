@@ -13,4 +13,14 @@
 - used array method like map(), slice(), findIndex() and includes()
 - when and why to use eval()
 - parse thru similar terms like 'tbsp' and 'table spoon' 
-- TODO still need to test and Recipe.parseIngredients()
+
+
+# 2019.02.19 10:57am 
+- implemented a for-loop inside a template string to for insert multiple ingredients in HTML('.recipe__ingredient-list')
+- created the recipeView for rendering recipe onto index.html
+- `recipe.formCount()`
+    - added `fractional` package to convert float number back to fraction in (https://www.npmjs.com/package/fractional)
+    - implemented destructuring from ES6 
+- `searchView.highlightSelected()`
+    - DOM manipulation to highlight selected recipe on the search list
+    - used CSS selector for dynamic selection on recipe ID
