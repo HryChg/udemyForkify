@@ -39,6 +39,9 @@ export default class Recipe{
         this.servings = 4;
     }
 
+    /**
+     * EFFECTS: parse thru this.ingredients and uniform the presentation of `count`, `unit`, and `ingredient`
+     */
     parseIngredients() {
         const unitsLong = ['tablespoons', 'tablespoon', 'ounces', 'ounce', 'teaspoons', 'teaspoon', 'cups', 'pounds'];
         const unitsShort = ['tbsp', 'tbsp', 'oz', 'oz', 'tsp', 'tsp', 'cup', 'pound'];
@@ -62,28 +65,25 @@ export default class Recipe{
                 ingredient = ingredient.replace(unit, unitsShort[i]); // replace all long unit in one ingredient to short unit
             });
 
-            // 2) remove parenthesis and the content within one ingredient
+            // 2) remove the parenthesis and the content within
             ingredient = ingredient.replace(/ *\([^)]*\) */g, ' '); 
 
-            // 3) parse one ingredient string into count, unit, and ingredient
-            const ingStrArr = ingredient.split(' '); // split one ingredient string to an string array 'ingStrArr'
+            // 3) parse one ingredient string into ingStrArr which includes : count, unit, and ingredient
+            const ingStrArr = ingredient.split(' ');
 
             // unitIndex is the first index of the an valid unit in ingStrArr, -1 if not found
             const unitIndex = ingStrArr.findIndex(el2 => units.includes(el2)); 
             
-            let objIng;
+            let objIng; // the new ingredient
             if (unitIndex > -1){
                 // There is a unit and a number
+                    // E.g. 4 1/2 cups, arrCount is [4 1/2] --> eval('4+1/2') --> 4.5
+                    // E.g. 4 cup     , arrCount = [4] --> ''
 
-                    /**
-                     * E.g. 4 1/2 cups, arrCount is [4 1/2] --> eval('4+1/2') --> 4.5
-                     * E.g. 4 cup, arrCount = [4] --> ''
-                     */
-                const arrCount = ingStrArr.slice(0, unitIndex);  // extract front part until the unit index
+                const arrCount = ingStrArr.slice(0, unitIndex);  // extract ingStrArr[0, unitIndex) === count of ing
                 let count;
                 if (arrCount.length === 1){
-                    count = eval(ingStrArr[0].replace('-', '+'));          // '1-1/3' or '1' --> '1+1/3' or '1'
-                    
+                    count = eval(ingStrArr[0].replace('-', '+'));          // '1-1/3' or '1' --> '1+1/3' or '1' 
                 } else {
                     count = eval(ingStrArr.slice(0, unitIndex).join('+')); // '1 1/3' --> 1+1/3
                 }
@@ -94,9 +94,8 @@ export default class Recipe{
                     ingredient: ingStrArr.slice(unitIndex + 1).join(' ')
                 };
 
-
             } else if ( parseInt(ingStrArr[0], 10) ) {
-                // There is NO unit, but 0th element in ingStrArr is a number
+                // There is NO unit, but the 0th element in ingStrArr is a number
                 objIng = {
                     count: parseInt(ingStrArr[0], 10),
                     unit: '',
@@ -104,7 +103,7 @@ export default class Recipe{
                 }
             } else if (unitIndex === -1) {
                 // There is NO unit and NO number in 0th position
-                // E.g. 'slice of tomato', where slice is not a valid units
+                // E.g. 'slice of tomato', where slice is not a valid units in our implementation
                 objIng = {
                     count: 1, 
                     unit: '',
@@ -112,11 +111,29 @@ export default class Recipe{
                 }
             }
 
-            console.log('parseIngredients() ---- objIng is:'); console.log(objIng); 
+            // console.log('parseIngredients() ---- objIng is:'); console.log(objIng); 
             return objIng;
         });
 
         this.ingredients = newIngredients;
     }
 
+    
+    /** 
+     * REQUIRES: only two types allowed ['dec', 'inc']
+     * EFFECTS: increase or decrease the number of servings and the count of each ingredients
+     *  
+     * @param type 'dec' for decreasing servings, 'inc' for increasing servings
+    */
+    updateServings (type) {
+        // Servings
+        const newServings = type === 'dec' ? this.servings-1 : this.servings+1;
+        
+        // Ingredients
+        this.ingredients.forEach(ing => {
+            ing.count = ing.count * (newServings / this.servings);
+        });
+
+        this.servings = newServings;
+    }
 }

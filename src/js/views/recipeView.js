@@ -1,17 +1,26 @@
 import { elements } from './base';
 import { Fraction } from 'fractional';
 
-
+/**
+ * REQUIRES: `factional` package 
+ * EFFECTS: return a string that is the fraction representation of count
+ * 
+ * 
+ * 
+ * @param {*} count 
+ */
 const formatCount = count => {
     if (count){
         // count = 2.5 -> 2 1/2
         // count = 0.5 -> 1/2
+
+        // destructure a two elt strArray to two constants (ES6 syntax)
         const [int, dec] = count.toString().split('.').map(el => parseInt(el, 10));
  
         // if no decimal
         if (!dec) return count;
 
-        // if no int, but  decimal  0.5 -> 1/2
+        // if no int, but decimal  0.5 -> 1/2
         if (int === 0) {
             const fr = new Fraction(count);
             return `${fr.numerator}/${fr.denominator}`;
@@ -19,11 +28,13 @@ const formatCount = count => {
             const fr = new Fraction(count - int); // fraction only on the decimal part
             return `${int} ${fr.numerator}/${fr.denominator}`;
         }
-
     }
     return '?';
 };
 
+/** 
+ * EFFECTS: return a HTML string of one ingredient
+ */
 const createIngredient = ingredient => `
     <li class="recipe__item">
         <svg class="recipe__icon">
@@ -37,10 +48,16 @@ const createIngredient = ingredient => `
     </li>
 `;
 
+/**
+ * EFFECTS: clear the recipe rendering in HTML
+ */
 export const clearRecipe = () => {
     elements.recipe.innerHTML = '';
 };
 
+/**
+ * EFFECTS: render the HTML representation of recipe to index.html, including the recipe title, image, directions, ingredients ... etc
+ */
 export const renderRecipe = recipe => {
     const markup = `
             <figure class="recipe__fig">
@@ -66,12 +83,12 @@ export const renderRecipe = recipe => {
                     <span class="recipe__info-text"> servings</span>
 
                     <div class="recipe__info-buttons">
-                        <button class="btn-tiny">
+                        <button class="btn-tiny btn-decrease">
                             <svg>
                                 <use href="img/icons.svg#icon-circle-with-minus"></use>
                             </svg>
                         </button>
-                        <button class="btn-tiny">
+                        <button class="btn-tiny btn-increase">
                             <svg>
                                 <use href="img/icons.svg#icon-circle-with-plus"></use>
                             </svg>
@@ -85,8 +102,6 @@ export const renderRecipe = recipe => {
                     </svg>
                 </button>
             </div>
-
-
 
             <div class="recipe__ingredients">
                 <ul class="recipe__ingredient-list">
@@ -116,6 +131,21 @@ export const renderRecipe = recipe => {
                 </a>
             </div>
     `;
-
     elements.recipe.insertAdjacentHTML('afterbegin', markup);
+};
+
+/**
+ * EFFECTS: update the recipeView with the new number of servings and the new count of ingredients
+ * 
+ * `document.querySelectorAll('.recipe__count')` will return an array of all HTML elements that are of `recipe__count` class
+ */
+export const updateServingsIngredients = recipe => {
+    // Update the Servings
+    document.querySelector('.recipe__info-data--people').textContent = recipe.servings;
+
+    // Update the Ingredients
+    const countElements = Array.from(document.querySelectorAll('.recipe__count'));
+    countElements.forEach((el, i) => {
+        el.textContent = formatCount(recipe.ingredients[i].count);
+    });
 };

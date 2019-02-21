@@ -15,12 +15,15 @@
 - parse thru similar terms like 'tbsp' and 'table spoon' 
 
 
-# 2019.02.19 10:57am 
-- implemented a for-loop inside a template string to for insert multiple ingredients in HTML('.recipe__ingredient-list')
-- created the recipeView for rendering recipe onto index.html
+# 2019.02.21 10:57am 
+- created the recipeView class for rendering recipe onto index.html
+- `renderRecipe`
+    -  implemented a for-loop inside the template string to insert multiple ingredients in HTML('.recipe__ingredient-list')
 - `recipe.formCount()`
     - added `fractional` package to convert float number back to fraction in (https://www.npmjs.com/package/fractional)
     - implemented destructuring from ES6 
 - `searchView.highlightSelected()`
     - DOM manipulation to highlight selected recipe on the search list
     - used CSS selector for dynamic selection on recipe ID
+- implemented event delegation `.matches()` on DOM elements (i.e. the increase and decrease buttons on the servings) in `index.elements.recipe.addEventListener` to update changes on number of servings and count of each ingredient
+

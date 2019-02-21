@@ -131,3 +131,31 @@ const controlRecipe = async () => {
 ['hashchange', 'load'].forEach(event => {
     window.addEventListener(event, controlRecipe)
 })
+
+
+/**
+ * EFFECTS: Handling Recipe button clicks.
+ *          If the click event matches `btn-decrease` or any `child elements of btn-decrease`, 
+ *          we update the servings and render the new result onto recipeView
+ *          Note `servings` cannot be less than 1
+ * 
+ * `.btn-decrease *` is a Universal CSS selector that selects all child elements of `btn-decrease`
+ */
+elements.recipe.addEventListener('click', e => {
+
+    if (e.target.matches('.btn-decrease, .btn-decrease *')) {
+        // Decrease button is clicked --> `btn-decrease` or `any child elements of btn-decrease`
+
+        if (state.recipe.servings > 1) { //servings cannot be 0 or negative
+            state.recipe.updateServings('dec');
+            recipeView.updateServingsIngredients(state.recipe);
+        }
+
+    } else if (e.target.matches('.btn-increase, .btn-increase *')) {
+        // Increase button is clicked --> `btn-increase` or `any child elements of btn-increase`
+        state.recipe.updateServings('inc');
+        recipeView.updateServingsIngredients(state.recipe);
+    }
+
+    console.log(state.recipe);
+});
