@@ -34,3 +34,9 @@
 - used `Array.splice()` to modify original array `List.items`
 - differentiated the difference between `Array.slice` and `Array.splice`
 - More use cases on `Array.findIndex` and `Array.find` in `List.deleteItem()` and `List.updateCount()`
+
+# 2019.02.22 9:39am 
+- created and rendered listView on the shopping List column
+- created shopping list controller
+- implemented text boxes and inc/dec btns for the list
+- hook up listView event change to List model

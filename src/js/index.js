@@ -3,6 +3,7 @@ import Recipe from './models/Recipe';
 import List from './models/List';
 import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
+import * as listView from './views/listView';
 import { elements, renderLoader, clearLoader } from './views/base';
 
 
@@ -13,6 +14,7 @@ import { elements, renderLoader, clearLoader } from './views/base';
 * - Liked Recipe
 */
 const state = {};
+window.state = state;
 
 /**
  * SEARCH CONTROLLER
@@ -134,6 +136,20 @@ const controlRecipe = async () => {
     window.addEventListener(event, controlRecipe)
 })
 
+/**
+ * LIST CONTROLLER
+ */
+const controlList = () => {
+    // Creat a new list if there is none yet
+    if (!state.list) state.list = new List();
+
+    // Add each ingredient to the list and UI
+    state.recipe.ingredients.forEach(el => {
+        const item = state.list.addItem(el.count, el.unit, el.ingredient);
+        listView.renderItem(item);
+    });
+}
+
 
 /**
  * EFFECTS: Handling Recipe button clicks.
@@ -157,8 +173,33 @@ elements.recipe.addEventListener('click', e => {
         // Increase button is clicked --> `btn-increase` or `any child elements of btn-increase`
         state.recipe.updateServings('inc');
         recipeView.updateServingsIngredients(state.recipe);
+
+    } else if (e.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
+        controlList();
     }
 });
 
-// Testing
-window.l = new List();
+
+// Handle Delete and Update List Item Events
+elements.shopping.addEventListener('click', e => {
+    // wherever we click on the shopping item, the element of class 'shopping_item' will be selected
+    const id = e.target.closest('.shopping__item').dataset.itemid;
+
+    if (e.target.matches('.shopping__delete, .shopping__delete *')) {
+        // Delete from state
+        state.list.deleteItem(id);
+
+        // Delete from UI
+        listView.deleteItem(id);
+
+    // Handle the count update
+    } else if (e.target.matches('.shopping__count-value')) { // if we manually change the textbox on shopping item
+        const val = parseFloat(e.target.value); // parse the value in textbox to float
+        state.list.updateCount(id, val);
+
+        console.log(state.list);
+    }
+
+});
+
+
