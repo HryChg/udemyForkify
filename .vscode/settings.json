@@ -1,10 +1,15 @@
 {
     "cSpell.words": [
         "Uncomment",
+        "additem",
         "edamam",
         "forkify",
         "hashchange",
         "js",
+        "uniqid",
+        "uniqueid",
+        "upleft",
         "url"
-    ]
+    ],
+    "C_Cpp.errorSquiggles": "Disabled"
 }
