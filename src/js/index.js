@@ -193,8 +193,8 @@ elements.shopping.addEventListener('click', e => {
         listView.deleteItem(id);
 
     // Handle the count update
-    } else if (e.target.matches('.shopping__count-value')) { // if we manually change the textbox on shopping item
-        const val = parseFloat(e.target.value); // parse the value in textbox to float
+    } else if (e.target.matches('.shopping__count-value')) { // if we manually change the text box on shopping item
+        const val = parseFloat(e.target.value); // parse the value in text box to float
         state.list.updateCount(id, val);
 
         console.log(state.list);
